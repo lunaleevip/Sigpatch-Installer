@@ -37,13 +37,17 @@ include $(DEVKITPRO)/libnx/switch_rules
 #   of a homebrew executable (.nro). This is intended to be used for sysmodules.
 #   NACP building is skipped as well.
 #---------------------------------------------------------------------------------
-APP_TITLE   := 	Sigpatch-Updater
-APP_AUTHOR  := 	TotalJustice
-APP_VERSION := 	0.1.3
+APP_TITLE   := 	Sigpatch Updater
+APP_AUTHOR  := 	HarukoNX
+
+APP_VERSION_MAJOR	:= 1
+APP_VERSION_MINOR	:= 0
+APP_VERSION_PATCH	:= 0
+APP_VERSION			:= 	$(APP_VERSION_MAJOR).$(APP_VERSION_MINOR).$(APP_VERSION_PATCH)
 
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	source
+SOURCES		:=	source source/ui source/util
 DATA		:=	data
 INCLUDES	:=	includes
 #ROMFS		:=	romfs
@@ -56,20 +60,28 @@ ARCH	:=	-march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIE
 CFLAGS	:=	-g -Wall -O3 -ffunction-sections \
 			$(ARCH) $(DEFINES)
 
-CFLAGS	+=	$(INCLUDE) -D__SWITCH__
+CFLAGS	+=	$(INCLUDE) \
+			-D__SWITCH__ \
+			-DAPP_VERSION_MAJOR=$(APP_VERSION_MAJOR) \
+			-DAPP_VERSION_MINOR=$(APP_VERSION_MINOR) \
+			-DAPP_VERSION_PATCH=$(APP_VERSION_PATCH)
 
-CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions
+CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++17
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:=  -lcurl -lmbedtls -lmbedx509 -lmbedcrypto -lminizip -lz -lnx
+LIBS	:=  -lpu -lfreetype -lSDL2_mixer -lopusfile -lopus -lmodplug -lmpg123 \
+			-lvorbisidec -logg -lSDL2_ttf -lSDL2_gfx -lSDL2_image -lSDL2 -lEGL \
+			-lGLESv2 -lglapi -ldrm_nouveau -lwebp -lpng -ljpeg -lcurl -lmbedtls \
+			-lmbedx509 -lmbedcrypto -lminizip -lz -ljansson `sdl2-config --libs` \
+			`freetype-config --libs` -lnx
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #---------------------------------------------------------------------------------
-LIBDIRS	:= $(PORTLIBS) $(LIBNX)
+LIBDIRS	:= $(PORTLIBS) $(LIBNX) $(CURDIR)/Plutonium/Plutonium/Output
 
 
 #---------------------------------------------------------------------------------
