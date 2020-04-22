@@ -14,8 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <util/File.hpp>
+#include <fstream>
 #include <sys/stat.h>
+#include <util/File.hpp>
 
 namespace util
 {
@@ -23,5 +24,20 @@ namespace util
   {
     struct stat buf;
     return (stat(path.c_str(), &buf) == 0);
+  }
+
+  void File::Write(std::string path, std::vector<char> data)
+  {
+    std::ofstream file;
+    file.open(path, std::ios::out | std::ios::binary | std::ios::trunc);
+    if(!file.is_open())
+    {
+      return;
+    }
+
+    file.write((char *)&data[0], data.size());
+
+    file.flush();
+    file.close();
   }
 }

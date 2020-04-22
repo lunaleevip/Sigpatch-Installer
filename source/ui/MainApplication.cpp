@@ -20,7 +20,52 @@ namespace ui
 {
   void MainApplication::OnLoad()
   {
-    this->layout = MainLayout::New();
-    this->LoadLayout(this->layout);
+    this->LockHomeButton();
+
+    this->updateLayout = UpdateLayout::New();
+    this->updateLayout->SetAppPath(this->appPath);
+
+    this->patchLayout = PatchLayout::New();
+
+    this->LoadLayout(this->updateLayout);
+  }
+
+  void MainApplication::LockHomeButton()
+  {
+    if((this->appletType != AppletType_Application && this->appletType != AppletType_SystemApplication) || this->homeButtonLocked)
+    {
+      return;
+    }
+
+    appletBeginBlockingHomeButtonShortAndLongPressed(0);
+
+    homeButtonLocked = true;
+  }
+
+  void MainApplication::SetAppletType(AppletType appletType)
+  {
+    this->appletType = appletType;
+  }
+
+  void MainApplication::SetAppPath(std::string appPath)
+  {
+    this->appPath = appPath;
+  }
+
+  void MainApplication::ShowPatch()
+  {
+    this->LoadLayout(this->patchLayout);
+  }
+
+  void MainApplication::UnlockHomeButton()
+  {
+    if((this->appletType != AppletType_Application && this->appletType != AppletType_SystemApplication) || !this->homeButtonLocked)
+    {
+      return;
+    }
+
+    appletEndBlockingHomeButtonShortAndLongPressed();
+
+    homeButtonLocked = false;
   }
 }

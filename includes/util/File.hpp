@@ -17,6 +17,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 namespace util
 {
@@ -24,6 +25,7 @@ namespace util
   {
     public:
       static bool Exists(std::string path);
+      static void Write(std::string path, std::vector<char> data);
 
   };
 }

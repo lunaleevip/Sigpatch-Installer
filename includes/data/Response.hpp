@@ -14,34 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <curl/curl.h>
-#include <ui/MainApplication.hpp>
+#pragma once
 
-ui::MainApplication::Ref global_app;
+#include <map>
+#include <switch.h>
+#include <vector>
 
-extern "C" void userAppInit()
+namespace data
 {
-  socketInitializeDefault();
-  curl_global_init(CURL_GLOBAL_ALL);
-  nxlinkStdio();
-}
+  class Response
+  {
+    public:
+      std::map<std::string, std::string> Headers;
+      std::vector<char> RawBody;
+      std::vector<char> RawHeader;
+      u16 StatusCode;
 
-extern "C" void userAppExit()
-{
-  socketExit();
-}
-
-int main(int argc, char **argv)
-{
-  auto renderer = pu::ui::render::Renderer::New(
-    SDL_INIT_EVERYTHING,
-    pu::ui::render::RendererInitOptions::RendererNoSound,
-    pu::ui::render::RendererHardwareFlags);
-
-  global_app = ui::MainApplication::New(renderer);
-  global_app->SetAppPath(argv[0]);
-  global_app->Prepare();
-  global_app->Show();
-
-  return 0;
+      void Clear();
+      void ParseHeaders();
+  };
 }

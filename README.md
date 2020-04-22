@@ -12,8 +12,10 @@ The patches are downloaded from [HarukoNX/Atmosphere](https://github.com/HarukoN
 
 ## Special Thanks!
 
-[toph](https://github.com/sudot0ph) for the design of the app icon!
+[ITotalJustice](https://github.com/ITotalJustice) for the original application.
 
-[TotalJustice](https://github.com/ITotalJustice) for the original application.
+[Joonie86](https://github.com/Joonie86/) for their contributions to original patches.
 
-[Joonie](https://github.com/Joonie86/) for their contributions to original patches.
+[sudot0ph](https://github.com/sudot0ph) for the original design of the app icon.
+
+[XorTroll](https://github.com/XorTroll) for the UI library Plutonium.

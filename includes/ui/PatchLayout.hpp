@@ -14,34 +14,30 @@
 // You should have received a copy of the GNU General Public License
 // along with this.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <curl/curl.h>
-#include <ui/MainApplication.hpp>
+#pragma once
 
-ui::MainApplication::Ref global_app;
+#include <pu/Plutonium>
 
-extern "C" void userAppInit()
+namespace ui
 {
-  socketInitializeDefault();
-  curl_global_init(CURL_GLOBAL_ALL);
-  nxlinkStdio();
-}
+  class PatchLayout : public pu::ui::Layout
+  {
+    public:
+      PatchLayout();
+      PU_SMART_CTOR(PatchLayout)
 
-extern "C" void userAppExit()
-{
-  socketExit();
-}
+      void OnInput(u64 Down, u64 Up, u64 Held, pu::ui::Touch Pos);
+      void Thread();
+      void ProgressUpdate(double progress);
 
-int main(int argc, char **argv)
-{
-  auto renderer = pu::ui::render::Renderer::New(
-    SDL_INIT_EVERYTHING,
-    pu::ui::render::RendererInitOptions::RendererNoSound,
-    pu::ui::render::RendererHardwareFlags);
-
-  global_app = ui::MainApplication::New(renderer);
-  global_app->SetAppPath(argv[0]);
-  global_app->Prepare();
-  global_app->Show();
-
-  return 0;
+    private:
+      pu::ui::elm::Rectangle::Ref titleRect;
+      pu::ui::elm::TextBlock::Ref titleText;
+      pu::ui::elm::ProgressBar::Ref progressBar;
+      pu::ui::elm::TextBlock::Ref loadingText;
+    
+    private:
+      bool checkingForPatches = false;
+      bool checkedForPatches = false;
+  };
 }

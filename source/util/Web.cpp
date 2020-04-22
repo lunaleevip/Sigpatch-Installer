@@ -44,43 +44,51 @@ namespace util
     );
   }
 
-  std::vector<char> Web::Get(std::string url, std::function<void(double)> progress)
+  data::Response Web::Get(std::string url, std::function<void(double)> progress)
   {
-    std::vector<char> buffer;
+    data::Response response;
 
     CURL * c = curl_easy_init();
     if(!c)
     {
-      buffer.clear();
-      return buffer;
+      response.Clear();
+      return response;
     }
 
     curl_easy_setopt(c, CURLOPT_CUSTOMREQUEST, "GET");
     curl_easy_setopt(c, CURLOPT_FOLLOWLOCATION, 1L);
+    curl_easy_setopt(c, CURLOPT_HEADERFUNCTION, Header);
+    curl_easy_setopt(c, CURLOPT_HEADERDATA, (void *) &response.RawHeader);
     curl_easy_setopt(c, CURLOPT_NOPROGRESS, 0L);
     curl_easy_setopt(c, CURLOPT_SSL_VERIFYPEER, 0L);
     curl_easy_setopt(c, CURLOPT_URL, url.c_str());
     curl_easy_setopt(c, CURLOPT_USERAGENT, "Sigpatch-Updater");
+    curl_easy_setopt(c, CURLOPT_WRITEDATA, (void *) &response.RawBody);
     curl_easy_setopt(c, CURLOPT_WRITEFUNCTION, Write);
-    curl_easy_setopt(c, CURLOPT_WRITEDATA, (void *) &buffer);
-    curl_easy_setopt(c, CURLOPT_XFERINFOFUNCTION, TransferInfo);
     curl_easy_setopt(c, CURLOPT_XFERINFODATA, (void *) &progress);
+    curl_easy_setopt(c, CURLOPT_XFERINFOFUNCTION, TransferInfo);
 
     CURLcode res = curl_easy_perform(c);
-    curl_easy_cleanup(c);
 
     if(res != CURLE_OK)
     {
-      buffer.clear();
+      response.Clear();
+      return response;
     }
 
-    return buffer;
+    curl_easy_getinfo(c, CURLINFO_RESPONSE_CODE, &response.StatusCode);
+    curl_easy_cleanup(c);
+
+    response.ParseHeaders();
+
+    return response;
   }
 
-  size_t Web::Write(const char *in, size_t size, size_t num, std::vector<char> *buffer)
+  size_t Web::Header(const char *in, size_t size, size_t num, std::vector<char> *buffer)
   {
     size_t i = 0;
-    while (i < size * num) {
+    while(i < size * num)
+    {
       buffer->push_back(*in);
       ++in;
       i++;
@@ -89,9 +97,23 @@ namespace util
     return i;
   }
 
-  size_t Web::TransferInfo(std::function<void(double)> *progress, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow) {
+  size_t Web::TransferInfo(std::function<void(double)> *progress, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow)
+  {
     auto completed = (double) dlnow / (double) dltotal;
     (*progress)(completed);
     return 0;
+  }
+
+  size_t Web::Write(const char *in, size_t size, size_t num, std::vector<char> *buffer)
+  {
+    size_t i = 0;
+    while(i < size * num)
+    {
+      buffer->push_back(*in);
+      ++in;
+      i++;
+    }
+
+    return i;
   }
 }

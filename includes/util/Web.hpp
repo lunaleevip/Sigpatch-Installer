@@ -17,9 +17,9 @@
 #pragma once
 
 #include <curl/curl.h>
+#include <data/Response.hpp>
 #include <functional>
 #include <string>
-#include <vector>
 
 namespace util
 {
@@ -27,8 +27,10 @@ namespace util
   {
     public:
       static bool IsConnected();
-      static std::vector<char> Get(std::string url, std::function<void(double)> progress);
-      static size_t Write(const char *in, size_t size, size_t num, std::vector<char> *buffer);
+      static data::Response Get(std::string url, std::function<void(double)> progress);
+      static size_t Header(const char *in, size_t size, size_t num, std::vector<char> *buffer);
       static size_t TransferInfo(std::function<void(double)> *progress, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow);
+      static size_t Write(const char *in, size_t size, size_t num, std::vector<char> *buffer);
+    
   };
 }

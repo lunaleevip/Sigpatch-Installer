@@ -17,7 +17,10 @@
 #pragma once
 
 #include <pu/Plutonium>
-#include <ui/MainLayout.hpp>
+#include <string>
+#include <switch.h>
+#include <ui/PatchLayout.hpp>
+#include <ui/UpdateLayout.hpp>
 
 namespace ui
 {
@@ -29,8 +32,18 @@ namespace ui
 
       void OnLoad() override;
 
+      void LockHomeButton();
+      void SetAppletType(AppletType appletType);
+      void SetAppPath(std::string appPath);
+      void ShowPatch();
+      void UnlockHomeButton();
+
     private:
-      MainLayout::Ref layout;
+      PatchLayout::Ref patchLayout = nullptr;
+      UpdateLayout::Ref updateLayout = nullptr;
+      AppletType appletType;
+      std::string appPath;
+      bool homeButtonLocked = false;
 
   };
 }

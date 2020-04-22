@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <string>
 #include <switch.h>
 #include <tuple>
 
@@ -24,9 +25,11 @@ namespace util
   class Version
   {
     public:
-      static std::tuple<u8, u8, u8> GetAppVersion();
-      static std::tuple<u8, u8, u8> GetFirmwareVersion();
+      static std::tuple<u32, u32, u32> GetAppVersion();
+      static std::tuple<u32, u32, u32> GetFirmwareVersion();
       static std::tuple<u32, u32, u32> GetAtmosphereVersion();
-
+      static std::tuple<u32, u32, u32> ParseVersion(std::string version);
+      static bool IsNewer(std::tuple<u32, u32, u32> a, std::tuple<u32, u32, u32> b);
+    
   };
 }

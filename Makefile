@@ -47,7 +47,7 @@ APP_VERSION			:= 	$(APP_VERSION_MAJOR).$(APP_VERSION_MINOR).$(APP_VERSION_PATCH)
 
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	source source/ui source/util
+SOURCES		:=	source source/data source/ui source/util
 DATA		:=	data
 INCLUDES	:=	includes
 #ROMFS		:=	romfs

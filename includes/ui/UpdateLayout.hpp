@@ -17,30 +17,43 @@
 #pragma once
 
 #include <pu/Plutonium>
+#include <vector>
 
 namespace ui
 {
-  class MainLayout : public pu::ui::Layout
+  class UpdateLayout : public pu::ui::Layout
   {
     public:
-      MainLayout();
-      PU_SMART_CTOR(MainLayout)
+      UpdateLayout();
+      PU_SMART_CTOR(UpdateLayout)
 
-      void MainThread();
+      void Thread();
       void ProgressUpdate(double progress);
+      bool ParseAppUpdateData(std::vector<char> data);
+      void SetAppPath(std::string appPath);
+      void UpdateLoadingText(std::string text);
 
     private:
       pu::ui::elm::Rectangle::Ref titleRect;
       pu::ui::elm::TextBlock::Ref titleText;
-      pu::ui::elm::ProgressBar::Ref updateProgressBar;
-      pu::ui::elm::TextBlock::Ref updateText;
+      pu::ui::elm::ProgressBar::Ref progressBar;
+      pu::ui::elm::TextBlock::Ref loadingText;
+      std::string appPath;
+    
+    private:
       bool hekateChecked = false;
+
+    private:
       bool internetChecked = false;
       bool hasInternet = false;
+
+    private:
       bool checkingForUpdate = false;
       bool checkedForUpdate = false;
-      bool checkingForPatches = false;
-      bool checkedForPatches = false;
+      bool downloadingUpdate = false;
+      bool downloadedUpdate = false;
+      bool requiresUpdate = false;
+      std::string updateUrl = "";
 
   };
 }

@@ -18,7 +18,7 @@
 
 namespace util
 {
-  std::tuple<u8, u8, u8> Version::GetAppVersion()
+  std::tuple<u32, u32, u32> Version::GetAppVersion()
   {
     return std::make_tuple(
       APP_VERSION_MAJOR,
@@ -26,7 +26,7 @@ namespace util
       APP_VERSION_PATCH);
   }
 
-  std::tuple<u8, u8, u8> Version::GetFirmwareVersion()
+  std::tuple<u32, u32, u32> Version::GetFirmwareVersion()
   {
     SetSysFirmwareVersion fw;
 
@@ -58,5 +58,65 @@ namespace util
       (u32)((exosphere_cfg >> 0x20) & 0xFF),
       (u32)((exosphere_cfg >> 0x18) & 0xFF),
       (u32)((exosphere_cfg >> 0x10) & 0xFF));
+  }
+
+  std::tuple<u32, u32, u32> Version::ParseVersion(std::string version)
+  {
+    u32 major = 0;
+    u32 minor = 0;
+    u32 patch = 0;
+    u8 section = 0;
+
+    std::string number = "";
+    for(char& c : version)
+    {
+      if(c >= '0' && c <= '9')
+      {
+          number += c;
+      }
+      else if(c == '.')
+      {
+        if(section == 0)
+        {
+          major = std::stoi(number);
+        }
+        else if(section == 1)
+        {
+          minor = std::stoi(number);
+        }
+        else if(section == 2)
+        {
+          patch = std::stoi(number);
+          break;
+        }
+
+        number = "";
+        section++;
+      }
+      else
+      {
+        number = "";
+      }
+    }
+
+    return std::make_tuple(
+      major,
+      minor,
+      patch);
+  }
+
+  bool Version::IsNewer(std::tuple<u32, u32, u32> a, std::tuple<u32, u32, u32> b)
+  {
+    if(std::get<0>(a) != std::get<0>(b))
+    {
+      return std::get<0>(a) > std::get<0>(b);
+    }
+
+    if(std::get<1>(a) != std::get<1>(b))
+    {
+      return std::get<1>(a) > std::get<1>(b);
+    }
+
+    return std::get<2>(a) > std::get<2>(b);
   }
 }
