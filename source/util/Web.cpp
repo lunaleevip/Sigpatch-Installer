@@ -1,4 +1,4 @@
-// Sigpatch Updater
+// Sigpatch Installer
 // Copyright (c) 2020 HarukoNX
 // 
 // This is free software: you can redistribute it and/or modify
@@ -62,7 +62,7 @@ namespace util
     curl_easy_setopt(c, CURLOPT_NOPROGRESS, 0L);
     curl_easy_setopt(c, CURLOPT_SSL_VERIFYPEER, 0L);
     curl_easy_setopt(c, CURLOPT_URL, url.c_str());
-    curl_easy_setopt(c, CURLOPT_USERAGENT, "Sigpatch-Updater");
+    curl_easy_setopt(c, CURLOPT_USERAGENT, "Sigpatch-Installer");
     curl_easy_setopt(c, CURLOPT_WRITEDATA, (void *) &response.RawBody);
     curl_easy_setopt(c, CURLOPT_WRITEFUNCTION, Write);
     curl_easy_setopt(c, CURLOPT_XFERINFODATA, (void *) &progress);

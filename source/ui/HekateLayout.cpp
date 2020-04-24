@@ -1,4 +1,4 @@
-// Sigpatch Updater
+// Sigpatch Installer
 // Copyright (c) 2020 HarukoNX
 // 
 // This is free software: you can redistribute it and/or modify

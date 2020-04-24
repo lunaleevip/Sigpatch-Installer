@@ -37,7 +37,7 @@ include $(DEVKITPRO)/libnx/switch_rules
 #   of a homebrew executable (.nro). This is intended to be used for sysmodules.
 #   NACP building is skipped as well.
 #---------------------------------------------------------------------------------
-APP_TITLE   := 	Sigpatch Updater
+APP_TITLE   := 	Sigpatch Installer
 APP_AUTHOR  := 	HarukoNX
 
 APP_VERSION_MAJOR	:= 1

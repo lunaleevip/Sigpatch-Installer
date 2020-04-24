@@ -1,4 +1,4 @@
-// Sigpatch Updater
+// Sigpatch Installer
 // Copyright (c) 2020 HarukoNX
 // 
 // This is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@ namespace ui
 
     this->titleRect = pu::ui::elm::Rectangle::New(0, 0, 1280, 84, pu::ui::Color::FromHex("#F44336FF"));
 
-    this->titleText = pu::ui::elm::TextBlock::New(24, 0, "Sigpatch Updater", 30);
+    this->titleText = pu::ui::elm::TextBlock::New(24, 0, "Sigpatch Installer", 30);
     this->titleText->SetY((84 - this->titleText->GetTextHeight()) / 2);
 
     this->hekateLayout = HekateLayout::New();

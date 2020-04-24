@@ -1,4 +1,4 @@
-// Sigpatch Updater
+// Sigpatch Installer
 // Copyright (c) 2020 HarukoNX
 // 
 // This is free software: you can redistribute it and/or modify
@@ -66,7 +66,7 @@ namespace ui
     }
 
     auto response = util::Web::Get(
-      "https://api.github.com/repos/HarukoNX/Sigpatch-Updater/releases",
+      "https://api.github.com/repos/HarukoNX/Sigpatch-Installer/releases",
       std::bind(&UpdateLayout::ProgressUpdate, this, std::placeholders::_1));
 
     if(this->ParseAppUpdateData(response.RawBody))

@@ -1,4 +1,4 @@
-# Sigpatch Updater
+# Sigpatch Installer
 
 This is an updater for the signature patches for Kosmos (Atmosphere + Hekate) that I'm maintaining. (Just the FS & Acid patches.)
 
