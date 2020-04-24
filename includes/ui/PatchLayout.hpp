@@ -28,16 +28,19 @@ namespace ui
 
       void OnInput(u64 Down, u64 Up, u64 Held, pu::ui::Touch Pos);
       void Thread();
+      std::string ParseNextLink(std::string link);
+      bool ParsePatchData(std::vector<char> data, std::tuple<u32, u32, u32> atmosphereVersion, std::tuple<u32, u32, u32> firmwareVersion);
       void ProgressUpdate(double progress);
+      void UpdateLoadingText(std::string text);
 
     private:
-      pu::ui::elm::Rectangle::Ref titleRect;
-      pu::ui::elm::TextBlock::Ref titleText;
       pu::ui::elm::ProgressBar::Ref progressBar;
       pu::ui::elm::TextBlock::Ref loadingText;
     
     private:
-      bool checkingForPatches = false;
-      bool checkedForPatches = false;
+      bool isThreadDone = false;
+      std::string loaderUrl = "";
+      std::string patchesUrl = "";
+
   };
 }

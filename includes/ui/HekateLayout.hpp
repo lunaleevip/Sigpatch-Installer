@@ -16,21 +16,19 @@
 
 #pragma once
 
-#include <string>
-#include <switch.h>
-#include <tuple>
+#include <pu/Plutonium>
 
-namespace util
+namespace ui
 {
-  class Version
+  class HekateLayout : public pu::ui::Layout
   {
     public:
-      static std::tuple<u32, u32, u32> GetAppVersion();
-      static std::tuple<u32, u32, u32> GetFirmwareVersion();
-      static std::tuple<u32, u32, u32> GetAtmosphereVersion();
-      static std::tuple<u32, u32, u32> ParseVersion(std::string version);
-      static bool IsNewer(std::tuple<u32, u32, u32> a, std::tuple<u32, u32, u32> b);
-      static bool IsEqual(std::tuple<u32, u32, u32> a, std::tuple<u32, u32, u32> b);
-    
+      HekateLayout();
+      PU_SMART_CTOR(HekateLayout)
+
+      void OnInput(u64 Down, u64 Up, u64 Held, pu::ui::Touch Pos);
+
+    private:
+
   };
 }

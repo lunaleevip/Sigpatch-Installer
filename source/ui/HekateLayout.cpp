@@ -14,23 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with this.  If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include <ui/MainApplication.hpp>
+#include <ui/HekateLayout.hpp>
 
-#include <string>
-#include <switch.h>
-#include <tuple>
+extern ui::MainApplication::Ref global_app;
 
-namespace util
+namespace ui
 {
-  class Version
+  HekateLayout::HekateLayout() : pu::ui::Layout()
   {
-    public:
-      static std::tuple<u32, u32, u32> GetAppVersion();
-      static std::tuple<u32, u32, u32> GetFirmwareVersion();
-      static std::tuple<u32, u32, u32> GetAtmosphereVersion();
-      static std::tuple<u32, u32, u32> ParseVersion(std::string version);
-      static bool IsNewer(std::tuple<u32, u32, u32> a, std::tuple<u32, u32, u32> b);
-      static bool IsEqual(std::tuple<u32, u32, u32> a, std::tuple<u32, u32, u32> b);
-    
-  };
+    this->SetBackgroundColor(pu::ui::Color::FromHex("#212121FF"));
+    this->SetOnInput(std::bind(&HekateLayout::OnInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
+  }
+
+  void HekateLayout::OnInput(u64 Down, u64 Up, u64 Held, pu::ui::Touch Pos)
+  {
+    if(Down & KEY_PLUS)
+    {
+      global_app->Close();
+    }
+  }
 }

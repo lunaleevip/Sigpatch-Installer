@@ -22,10 +22,24 @@ namespace ui
   {
     this->LockHomeButton();
 
+
+    this->titleRect = pu::ui::elm::Rectangle::New(0, 0, 1280, 84, pu::ui::Color::FromHex("#F44336FF"));
+
+    this->titleText = pu::ui::elm::TextBlock::New(24, 0, "Sigpatch Updater", 30);
+    this->titleText->SetY((84 - this->titleText->GetTextHeight()) / 2);
+
+    this->hekateLayout = HekateLayout::New();
+    this->hekateLayout->Add(this->titleRect);
+    this->hekateLayout->Add(this->titleText);
+
     this->updateLayout = UpdateLayout::New();
     this->updateLayout->SetAppPath(this->appPath);
+    this->updateLayout->Add(this->titleRect);
+    this->updateLayout->Add(this->titleText);
 
     this->patchLayout = PatchLayout::New();
+    this->patchLayout->Add(this->titleRect);
+    this->patchLayout->Add(this->titleText);
 
     this->LoadLayout(this->updateLayout);
   }
@@ -50,6 +64,11 @@ namespace ui
   void MainApplication::SetAppPath(std::string appPath)
   {
     this->appPath = appPath;
+  }
+
+  void MainApplication::ShowHekate()
+  {
+    this->LoadLayout(this->hekateLayout);
   }
 
   void MainApplication::ShowPatch()

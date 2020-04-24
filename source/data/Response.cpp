@@ -52,7 +52,7 @@ namespace data
       this->Headers.insert(
         std::pair<std::string, std::string>(
           header.substr(0, pos),
-          header.substr(pos + 2, header.size() - pos + 2)
+          header.substr(pos + 2, header.size() - pos - 2)
         )
       );
     }

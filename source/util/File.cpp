@@ -26,6 +26,12 @@ namespace util
     return (stat(path.c_str(), &buf) == 0);
   }
 
+
+  void File::MakeFolder(std::string path)
+  {
+    mkdir(path.c_str(), 0775);
+  }
+
   void File::Write(std::string path, std::vector<char> data)
   {
     std::ofstream file;

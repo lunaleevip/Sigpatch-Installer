@@ -19,6 +19,7 @@
 #include <pu/Plutonium>
 #include <string>
 #include <switch.h>
+#include <ui/HekateLayout.hpp>
 #include <ui/PatchLayout.hpp>
 #include <ui/UpdateLayout.hpp>
 
@@ -35,12 +36,20 @@ namespace ui
       void LockHomeButton();
       void SetAppletType(AppletType appletType);
       void SetAppPath(std::string appPath);
+      void ShowHekate();
       void ShowPatch();
       void UnlockHomeButton();
 
     private:
+      pu::ui::elm::Rectangle::Ref titleRect = nullptr;
+      pu::ui::elm::TextBlock::Ref titleText = nullptr;
+
+    private:
+      HekateLayout::Ref hekateLayout = nullptr;
       PatchLayout::Ref patchLayout = nullptr;
       UpdateLayout::Ref updateLayout = nullptr;
+
+    private:
       AppletType appletType;
       std::string appPath;
       bool homeButtonLocked = false;

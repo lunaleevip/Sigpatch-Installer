@@ -99,6 +99,11 @@ namespace util
       }
     }
 
+    if(section == 2 && !number.empty())
+    {
+      patch = std::stoi(number);
+    }
+
     return std::make_tuple(
       major,
       minor,
@@ -118,5 +123,14 @@ namespace util
     }
 
     return std::get<2>(a) > std::get<2>(b);
+  }
+
+  bool Version::IsEqual(std::tuple<u32, u32, u32> a, std::tuple<u32, u32, u32> b)
+  {
+    return (
+      std::get<0>(a) == std::get<0>(b) &&
+      std::get<1>(a) == std::get<1>(b) &&
+      std::get<2>(a) == std::get<2>(b)
+    );
   }
 }

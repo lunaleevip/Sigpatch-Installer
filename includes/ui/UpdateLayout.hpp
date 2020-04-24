@@ -34,25 +34,12 @@ namespace ui
       void UpdateLoadingText(std::string text);
 
     private:
-      pu::ui::elm::Rectangle::Ref titleRect;
-      pu::ui::elm::TextBlock::Ref titleText;
       pu::ui::elm::ProgressBar::Ref progressBar;
       pu::ui::elm::TextBlock::Ref loadingText;
       std::string appPath;
-    
-    private:
-      bool hekateChecked = false;
 
     private:
-      bool internetChecked = false;
-      bool hasInternet = false;
-
-    private:
-      bool checkingForUpdate = false;
-      bool checkedForUpdate = false;
-      bool downloadingUpdate = false;
-      bool downloadedUpdate = false;
-      bool requiresUpdate = false;
+      bool isThreadDone = false;
       std::string updateUrl = "";
 
   };

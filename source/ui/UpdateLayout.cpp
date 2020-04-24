@@ -30,13 +30,6 @@ namespace ui
   {
     this->SetBackgroundColor(pu::ui::Color::FromHex("#212121FF"));
 
-    this->titleRect = pu::ui::elm::Rectangle::New(0, 0, 1280, 84, pu::ui::Color::FromHex("#F44336FF"));
-    this->Add(this->titleRect);
-
-    this->titleText = pu::ui::elm::TextBlock::New(24, 0, "Sigpatch Updater", 30);
-    this->titleText->SetY((84 - this->titleText->GetTextHeight()) / 2);
-    this->Add(this->titleText);
-
     this->loadingText = pu::ui::elm::TextBlock::New(0, 0, "", 24);
     this->loadingText->SetColor(pu::ui::Color::FromHex("#FAFAFAFF"));
     this->Add(this->loadingText);
@@ -52,53 +45,40 @@ namespace ui
 
   void UpdateLayout::Thread()
   {
-    if(!this->hekateChecked)
+    if(this->isThreadDone)
     {
-      this->hekateChecked = true;
-      if(!util::File::Exists("sdmc:/bootloader/hekate_ipl.ini"))
-      {
-        global_app->CreateShowDialog("Hekate Required", "Make sure you have Hekate installed.", { "Ok" }, true);
-        global_app->Close();
-        return;
-      }
-
-      this->internetChecked = true;
-      if(!util::Web::IsConnected())
-      {
-        global_app->CreateShowDialog("Internet Required", "Make sure you are connected to the Internet and use a service like 90DNS to block traffic to Nintendo.", { "Ok" }, true);
-        global_app->Close();
-        return;
-      }
-      else
-      {
-        this->hasInternet = true;
-        return;
-      }
+      return;
     }
-    else if(this->hasInternet && !this->checkingForUpdate && !this->checkedForUpdate)
+    this->isThreadDone = true;
+
+    if(!util::File::Exists("sdmc:/bootloader/hekate_ipl.ini"))
     {
-      this->checkingForUpdate = true;
-
-      auto response = util::Web::Get(
-        "https://api.github.com/repos/HarukoNX/Sigpatch-Updater/releases",
-        std::bind(&UpdateLayout::ProgressUpdate, this, std::placeholders::_1));
-
-      this->requiresUpdate = this->ParseAppUpdateData(response.RawBody);
-      this->checkingForUpdate = false;
-      this->checkedForUpdate = true;
+      global_app->CreateShowDialog("Hekate Required", "Make sure you have Hekate installed.", { "Ok" }, true);
+      global_app->Close();
+      return;
     }
-    else if(this->checkedForUpdate && this->requiresUpdate && !this->downloadingUpdate && !this->downloadedUpdate)
-    {
-      this->downloadingUpdate = true;
 
+    if(!util::Web::IsConnected())
+    {
+      global_app->CreateShowDialog("Internet Required", "Make sure you are connected to the Internet and use a service like 90DNS to block traffic to Nintendo.", { "Ok" }, true);
+      global_app->Close();
+      return;
+    }
+
+    auto response = util::Web::Get(
+      "https://api.github.com/repos/HarukoNX/Sigpatch-Updater/releases",
+      std::bind(&UpdateLayout::ProgressUpdate, this, std::placeholders::_1));
+
+    if(this->ParseAppUpdateData(response.RawBody))
+    {
       this->UpdateLoadingText("Downloading update...");
 
-      auto response = util::Web::Get(updateUrl, std::bind(&UpdateLayout::ProgressUpdate, this, std::placeholders::_1));
+      auto response = util::Web::Get(this->updateUrl, std::bind(&UpdateLayout::ProgressUpdate, this, std::placeholders::_1));
       util::File::Write(this->appPath, response.RawBody);
       envSetNextLoad(this->appPath.c_str(), this->appPath.c_str());
       global_app->Close();
     }
-    else if(this->checkedForUpdate && !this->requiresUpdate && !this->downloadingUpdate && !this->downloadedUpdate)
+    else
     {
       global_app->ShowPatch();
     }
@@ -182,7 +162,7 @@ namespace ui
         continue;
       }
 
-      updateUrl = std::string(json_string_value(browserDownloadUrl));
+      this->updateUrl = std::string(json_string_value(browserDownloadUrl));
       json_decref(root);
       return true;
     }
