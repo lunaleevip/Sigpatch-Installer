@@ -45,12 +45,12 @@ namespace ui
     this->updateLayout->SetAppPath(this->appPath);
     this->updateLayout->Add(this->titleRect);
     this->updateLayout->Add(this->titleText);
-    this->hekateLayout->Add(this->versionText);
+    this->updateLayout->Add(this->versionText);
 
     this->patchLayout = PatchLayout::New();
     this->patchLayout->Add(this->titleRect);
     this->patchLayout->Add(this->titleText);
-    this->hekateLayout->Add(this->versionText);
+    this->patchLayout->Add(this->versionText);
 
     this->LoadLayout(this->updateLayout);
   }
