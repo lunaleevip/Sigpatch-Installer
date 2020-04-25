@@ -26,6 +26,7 @@ namespace util
     public:
       static bool Exists(std::string path);
       static void MakeFolder(std::string path);
+      static std::vector<char> Read(std::string path);
       static void Write(std::string path, std::vector<char> data);
 
   };

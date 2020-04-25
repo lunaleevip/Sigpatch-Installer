@@ -17,6 +17,8 @@
 #pragma once
 
 #include <pu/Plutonium>
+#include <SimpleIniParser.hpp>
+#include <vector>
 
 namespace ui
 {
@@ -25,10 +27,19 @@ namespace ui
     public:
       HekateLayout();
       PU_SMART_CTOR(HekateLayout)
+      ~HekateLayout();
 
       void OnInput(u64 Down, u64 Up, u64 Held, pu::ui::Touch Pos);
+      void OnItemClicked();
+      void GetHekateConfig();
 
     private:
+      simpleIniParser::Ini * config = nullptr;
+      pu::ui::elm::Rectangle::Ref instructionsRect;
+      pu::ui::elm::TextBlock::Ref instructionsTitle;
+      pu::ui::elm::TextBlock::Ref instructionsSubtitle;
+      pu::ui::elm::Menu::Ref menu;
+      std::vector<bool> itemsSelected;
 
   };
 }

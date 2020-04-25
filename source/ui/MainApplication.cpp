@@ -22,24 +22,35 @@ namespace ui
   {
     this->LockHomeButton();
 
-
-    this->titleRect = pu::ui::elm::Rectangle::New(0, 0, 1280, 84, pu::ui::Color::FromHex("#F44336FF"));
+    this->titleRect = pu::ui::elm::Rectangle::New(0, 0, 1280, 84, pu::ui::Color::FromHex("#BA000DFF"));
 
     this->titleText = pu::ui::elm::TextBlock::New(24, 0, "Sigpatch Installer", 30);
+    this->titleText->SetColor(pu::ui::Color::FromHex("#FFFFFFFF"));
     this->titleText->SetY((84 - this->titleText->GetTextHeight()) / 2);
+
+    this->versionText = pu::ui::elm::TextBlock::New(
+      24 + this->titleText->GetTextWidth() + 12,
+      0,
+      "v" + std::to_string(APP_VERSION_MAJOR) + "." + std::to_string(APP_VERSION_MINOR) + "." + std::to_string(APP_VERSION_PATCH),
+      15);
+    this->versionText->SetColor(pu::ui::Color::FromHex("#FFFFFFFF"));
+    this->versionText->SetY(this->titleText->GetY() + this->titleText->GetTextHeight() - this->versionText->GetTextHeight() - 7);
 
     this->hekateLayout = HekateLayout::New();
     this->hekateLayout->Add(this->titleRect);
     this->hekateLayout->Add(this->titleText);
+    this->hekateLayout->Add(this->versionText);
 
     this->updateLayout = UpdateLayout::New();
     this->updateLayout->SetAppPath(this->appPath);
     this->updateLayout->Add(this->titleRect);
     this->updateLayout->Add(this->titleText);
+    this->hekateLayout->Add(this->versionText);
 
     this->patchLayout = PatchLayout::New();
     this->patchLayout->Add(this->titleRect);
     this->patchLayout->Add(this->titleText);
+    this->hekateLayout->Add(this->versionText);
 
     this->LoadLayout(this->updateLayout);
   }

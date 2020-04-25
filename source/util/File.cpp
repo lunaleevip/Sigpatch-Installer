@@ -26,10 +26,24 @@ namespace util
     return (stat(path.c_str(), &buf) == 0);
   }
 
-
   void File::MakeFolder(std::string path)
   {
     mkdir(path.c_str(), 0775);
+  }
+
+  std::vector<char> File::Read(std::string path)
+  {
+    std::ifstream file;
+    file.open(path, std::ios::in | std::ios::binary | std::ios::ate);
+    
+    std::streamsize size = file.tellg();
+    file.seekg(0, std::ios::beg);
+
+    std::vector<char> buffer(size);
+    file.read(buffer.data(), size);
+    file.close();
+
+    return buffer;
   }
 
   void File::Write(std::string path, std::vector<char> data)

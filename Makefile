@@ -50,7 +50,7 @@ BUILD		:=	build
 SOURCES		:=	source source/data source/ui source/util
 DATA		:=	data
 INCLUDES	:=	includes
-#ROMFS		:=	romfs
+ROMFS		:=	romfs
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -74,14 +74,15 @@ LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*
 LIBS	:=  -lpu -lfreetype -lSDL2_mixer -lopusfile -lopus -lmodplug -lmpg123 \
 			-lvorbisidec -logg -lSDL2_ttf -lSDL2_gfx -lSDL2_image -lSDL2 -lEGL \
 			-lGLESv2 -lglapi -ldrm_nouveau -lwebp -lpng -ljpeg -lcurl -lmbedtls \
-			-lmbedx509 -lmbedcrypto -lminizip -lz -ljansson `sdl2-config --libs` \
-			`freetype-config --libs` -lnx
+			-lmbedx509 -lmbedcrypto -lminizip -lz -ljansson -lSimpleIniParser \
+			`sdl2-config --libs` `freetype-config --libs` -lnx
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #---------------------------------------------------------------------------------
-LIBDIRS	:= $(PORTLIBS) $(LIBNX) $(CURDIR)/Plutonium/Plutonium/Output
+LIBDIRS	:=	$(PORTLIBS) $(LIBNX) $(CURDIR)/Plutonium/Plutonium/Output \
+						$(CURDIR)/SimpleIniParser
 
 
 #---------------------------------------------------------------------------------

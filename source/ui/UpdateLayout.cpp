@@ -74,6 +74,7 @@ namespace ui
       this->UpdateLoadingText("Downloading update...");
 
       auto response = util::Web::Get(this->updateUrl, std::bind(&UpdateLayout::ProgressUpdate, this, std::placeholders::_1));
+      romfsExit();
       util::File::Write(this->appPath, response.RawBody);
       envSetNextLoad(this->appPath.c_str(), this->appPath.c_str());
       global_app->Close();

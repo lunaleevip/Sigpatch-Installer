@@ -239,7 +239,7 @@ namespace ui
         return true;
       }
       
-      if (
+      if(
         util::Version::IsEqual(atmosphereVersion, compatibleAtmosphereVersion)
         && (
           util::Version::IsEqual(firmwareVersion, maxFirmwareVersion)
@@ -278,7 +278,7 @@ namespace ui
             continue;
           }
 
-          if(assetName != "patches.ini")
+          if(assetName == "patches.ini")
           {
             this->patchesUrl = std::string(json_string_value(browserDownloadUrl));
           }

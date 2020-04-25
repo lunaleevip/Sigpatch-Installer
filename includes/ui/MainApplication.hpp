@@ -43,6 +43,7 @@ namespace ui
     private:
       pu::ui::elm::Rectangle::Ref titleRect = nullptr;
       pu::ui::elm::TextBlock::Ref titleText = nullptr;
+      pu::ui::elm::TextBlock::Ref versionText = nullptr;
 
     private:
       HekateLayout::Ref hekateLayout = nullptr;
